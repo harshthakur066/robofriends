@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import axios from "axios";
+
 import CardList from "./components/CardList";
 import SearchBox from "./components/SearchBox";
 import Scroll from "./components/Scroll";
@@ -11,44 +13,32 @@ class App extends Component {
     super();
     this.state = {
       robots: robots,
-      searchfield1: "",
-      searchfield2: "",
+      searchfield: "",
     };
   }
 
-  componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => {
-        return response.json();
-      })
-      .then((users) => {
-        this.setState({ robots: users });
-      });
+  async componentDidMount() {
+    const users = await axios.get("https://jsonplaceholder.typicode.com/users");
+    this.setState({ robots: users.data });
   }
 
-  // onSearchChange = (event) => {
-  // 	console.log(event.target.value )
-  // 	this.setState({ searchfield1: event.target.value })
-  // }
-  onSearchChange1 = (event) => {
-    console.log(event.target.value);
-    this.setState({ searchfield1: event.target.value });
+  onSearchChange = (event) => {
+    // console.log(event.target.value);
+    this.setState({ searchfield: event.target.value });
   };
 
   render() {
     const filteredRobots = this.state.robots.filter((robots) => {
-      //console.log(robots)
-      console.log(this.state.searchfeild1);
-      //console.log(this.state.searchfeild2)
+      // console.log(robots);
       return robots.name
         .toLowerCase()
-        .includes(this.state.searchfield1.toLowerCase());
+        .includes(this.state.searchfield.toLowerCase());
     });
 
     return (
       <div className="tc">
         <Header />
-        <SearchBox searchChange1={this.onSearchChange1} />
+        <SearchBox searchChange1={this.onSearchChange} />
         <Scroll>
           <CardList robots={filteredRobots} />
         </Scroll>
