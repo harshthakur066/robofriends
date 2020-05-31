@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "./Card";
-// import { robots } from "../robo-list";
 
 const CardList = ({ robots }) => {
   return (
