@@ -17,9 +17,13 @@ class App extends Component {
     };
   }
 
-  async componentDidMount() {
+  onRequestRobots = async () => {
     const users = await axios.get("https://jsonplaceholder.typicode.com/users");
     this.setState({ robots: users.data });
+  };
+
+  async componentDidMount() {
+    this.onRequestRobots();
   }
 
   onSearchChange = (event) => {
@@ -27,20 +31,21 @@ class App extends Component {
     this.setState({ searchfield: event.target.value });
   };
 
-  render() {
-    const filteredRobots = this.state.robots.filter((robots) => {
+  filterRobots = () => {
+    const { robots, searchfield } = this.state;
+    return robots.filter((robots) => {
       // console.log(robots);
-      return robots.name
-        .toLowerCase()
-        .includes(this.state.searchfield.toLowerCase());
+      return robots.name.toLowerCase().includes(searchfield.toLowerCase());
     });
+  };
 
+  render() {
     return (
       <div className="tc">
         <Header />
         <SearchBox searchChange1={this.onSearchChange} />
         <Scroll>
-          <CardList robots={filteredRobots} />
+          <CardList robots={this.filterRobots()} />
         </Scroll>
       </div>
     );

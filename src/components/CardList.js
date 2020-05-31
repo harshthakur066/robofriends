@@ -2,6 +2,7 @@ import React from "react";
 import Card from "./Card";
 
 const CardList = ({ robots }) => {
+  // console.log(robots);
   return (
     <div>
       {robots.length ? (
@@ -16,7 +17,7 @@ const CardList = ({ robots }) => {
           );
         })
       ) : (
-        <h2 className="f1"> Loading... </h2>
+        <h2 className="f1">No robots</h2>
       )}
     </div>
   );
